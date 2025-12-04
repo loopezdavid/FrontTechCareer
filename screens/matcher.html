@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Matcher — El Huesaso GPT</title>
+  <link rel="stylesheet" href="../css/neo-glass.css">
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/matcher.js" defer></script>
+</head>
+<body class="neo-bg">
+
+  <header class="nav glass-sm">
+    <div class="brand small">
+      <div class="logo-glow">EH</div>
+      <div>
+        <div class="brand-title small">El Huesaso</div>
+        <div class="brand-sub muted">Sube tu CV y recibe predicciones</div>
+      </div>
+    </div>
+    <nav class="nav-actions">
+      <button class="btn ghost" onclick="goTo('home')">Inicio</button>
+      <button class="btn ghost" onclick="goTo('skills')">Skills</button>
+    </nav>
+  </header>
+
+  <main class="matcher-main">
+    <aside class="left-panel glass">
+      <h3>Sube tu CV</h3>
+      <label for="fileinput" class="upload-area" id="uploader">
+        <div class="upload-inner">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 3v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <strong>Haz clic o arrastra tu archivo</strong>
+          <span class="muted">PDF • &lt;5MB</span>
+        </div>
+      </label>
+      <input id="fileinput" type="file" accept="application/pdf" />
+
+      <div class="controls">
+        <button id="sendBtn" class="btn primary">Enviar</button>
+        <button id="clearBtn" class="btn ghost">Limpiar</button>
+        <button id="downloadJson" class="btn ghost">Descargar JSON</button>
+      </div>
+
+      <textarea id="extracted" placeholder="Texto extraído..." readonly></textarea>
+      <div class="muted meta" id="metaFilename"></div>
+    </aside>
+
+    <section class="right-panel">
+      <div class="results glass-sm">
+        <div class="result-head">
+          <div>
+            <div class="muted">Resultado</div>
+            <div id="predMain" class="prediction">— Esperando archivo —</div>
+            <div id="top3mini" class="muted small"></div>
+          </div>
+        </div>
+
+        <div class="top3-list" id="topList"></div>
+
+        <h4>Todas las probabilidades</h4>
+        <div class="table-wrapper">
+          <table id="probTable">
+            <thead><tr><td>Job</td><td style="text-align:right">Prob</td></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="result-actions">
+          <button class="btn primary" onclick="highlightBest()">Resaltar mejor</button>
+          <button class="btn ghost" onclick="goTo('skills')">Ver skills</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer glass-sm">
+    <div class="muted">© El Huesaso GPT — Neo‑Glass</div>
+  </footer>
+
+</body>
+</html>
