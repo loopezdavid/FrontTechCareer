@@ -6,4 +6,4 @@ function goTo(screen){
     skills: "../screens/skills.html"
   };
   window.location.href = map[screen] || map.home;
-}
+} 
