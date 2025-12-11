@@ -1,36 +1,74 @@
-// skills.js
+document.addEventListener('DOMContentLoaded', () => {
+  const skillsBox = document.getElementById('skillsBox');
+  const jobsBox = document.getElementById('jobsBox');
 
-// Get saved skills from localStorage
-const saved = localStorage.getItem("skills_detected");
-const box = document.getElementById("skillsBox");
-
-if (!saved) {
-  box.innerHTML = "<p class='muted'>No hay skills procesadas aún. Vuelve al matcher y procesa un CV.</p>";
-} else {
-  JSON.parse(saved).forEach(skill => {
-    const tag = document.createElement("span");
-    tag.className = "skill-pill";
-    tag.textContent = skill;
-    box.appendChild(tag);
-  });
-}
-
-// Export skills as CSV
-function exportSkills() {
-  const s = localStorage.getItem("skills_detected");
-  if (!s) {
-    alert("No hay skills para exportar");
-    return;
+  // Helper to render skills
+  function renderSkills() {
+    const skills = JSON.parse(localStorage.getItem('skills_detected') || '[]');
+    if (skills.length) {
+      skillsBox.innerHTML = skills.map(s => `<span class="skill-pill">${s}</span>`).join('');
+    } else {
+      skillsBox.innerHTML = '<p class="muted">No se detectaron skills aún.</p>';
+    }
   }
 
-  const arr = JSON.parse(s);
-  const csv = arr.map(x => `"${x.replace(/"/g, '""')}"`).join("\n");
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'skills.csv';
-  a.click();
-}
+  // Helper to render jobs with matching & missing skills
+  function renderJobs() {
+    const jobs = JSON.parse(localStorage.getItem('jobs_detected') || '[]');
+    if (!jobs.length) {
+      jobsBox.innerHTML = '<p class="muted">No hay trabajos sugeridos aún.</p>';
+      return;
+    }
 
-// Make exportSkills global so the HTML button can call it
-window.exportSkills = exportSkills;
+    jobsBox.innerHTML = jobs.map(j => `
+      <div class="job-card">
+        <strong>${j.job_title}</strong><br>
+        Matching skills: ${j.matching_skills?.join(', ') || 'Ninguna'}<br>
+        Faltan: ${j.missing_skills?.join(', ') || 'Ninguna'}
+      </div>
+    `).join('');
+  }
+
+  // Keep checking localStorage in case background fetch is not done yet
+  const maxRetries = 10;
+  let attempt = 0;
+  function tryRender() {
+    attempt++;
+    const skills = JSON.parse(localStorage.getItem('skills_detected') || '[]');
+    const jobs = JSON.parse(localStorage.getItem('jobs_detected') || '[]');
+
+    if (skills.length || jobs.length || attempt >= maxRetries) {
+      renderSkills();
+      renderJobs();
+    } else {
+      setTimeout(tryRender, 300); // wait 300ms and try again
+    }
+  }
+
+  tryRender();
+
+  // CSV export
+  window.exportSkills = function() {
+    const skills = JSON.parse(localStorage.getItem('skills_detected') || '[]');
+    if (!skills.length) return alert("No hay skills para exportar.");
+
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Skill\n" 
+      + skills.map(s => `"${s}"`).join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "skills_detectadas.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  // Clear localStorage
+  window.clearStorage = function() {
+    localStorage.removeItem('skills_detected');
+    localStorage.removeItem('jobs_detected');
+    location.reload();
+  }
+});

@@ -6,7 +6,7 @@
   <title>Skills — El Huesaso GPT</title>
   <link rel="stylesheet" href="../css/neo-glass.css">
   <script src="../js/navigation.js" defer></script>
-  <script src="../js/skills.js" defer></script>
+  <script src="../js/skills_matcher.js" defer></script>
 </head>
 <body class="neo-bg">
 
@@ -26,13 +26,18 @@
 
   <main class="skills-main">
     <div class="skills-panel glass">
-      <h3>Habilidades</h3>
-      <div id="skillsBox" class="skills-box"></div>
+      <h3>Habilidades extraídas</h3>
+      <div id="skillsBox" class="skills-box">Cargando...</div>
 
       <div class="skills-actions">
         <button class="btn primary" onclick="exportSkills()">Exportar CSV</button>
-        <button class="btn ghost" onclick="localStorage.removeItem('skills_detected'); location.reload();">Limpiar</button>
+        <button class="btn ghost" onclick="clearStorage()">Limpiar</button>
       </div>
+    </div>
+
+    <div class="jobs-panel glass" style="margin-top:1rem">
+      <h3>Trabajos sugeridos</h3>
+      <div id="jobsBox" class="jobs-box">Cargando...</div>
     </div>
   </main>
 
