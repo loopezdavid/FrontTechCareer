@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>El Huesaso GPT — Inicio (Neo-Glass)</title>
+  <title>TechCareer — Inicio (Neo-Glass)</title>
   <link rel="stylesheet" href="../css/neo-glass.css">
   <script src="../js/navigation.js" defer></script>
+  <script src="../js/chat.js" defer></script>
 </head>
 <body class="neo-bg">
 
   <header class="nav">
     <div class="brand">
-      <div class="logo-glow">EH</div>
+      <div class="logo-glow">TC</div>
       <div>
-        <div class="brand-title">El Huesaso GPT</div>
+        <div class="brand-title">TechCareer</div>
         <div class="brand-sub">Match de Trabajo con IA</div>
       </div>
     </div>
@@ -70,9 +71,35 @@
   </main>
 
   <footer class="footer glass-sm">
-    <div>© <strong>El Huesaso GPT</strong> — Neo‑Glass Edition</div>
+    <div>© <strong>TechCareer</strong> — Neo-Glass Edition</div>
     <div class="muted">Integrado · Privado · Local</div>
   </footer>
+
+  <!-- Widget de chat de TechCareer Assistant -->
+  <div id="tc-chat-widget">
+    <button id="tc-chat-toggle" class="glass-sm" aria-label="Abrir chat de ayuda">
+      💬
+    </button>
+
+    <div id="tc-chat-panel" class="tc-chat-hidden glass-sm">
+      <div id="tc-chat-header">
+        <span>TechCareer Assistant</span>
+        <button id="tc-chat-close" aria-label="Cerrar chat">×</button>
+      </div>
+
+      <div id="tc-chat-messages"></div>
+
+      <form id="tc-chat-form">
+        <input
+          id="tc-chat-input"
+          type="text"
+          placeholder="Escribe tu pregunta..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn primary">Enviar</button>
+      </form>
+    </div>
+  </div>
 
 </body>
 </html>
