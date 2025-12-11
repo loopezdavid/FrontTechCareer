@@ -102,7 +102,7 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 .o1{width:80px;height:80px;background:linear-gradient(90deg,#3fb7ff,#6ef1d4);left:0;top:10px;animation:orb 3s ease-in-out infinite}
 .o2{width:60px;height:60px;background:linear-gradient(90deg,#8a6eff,#3fb7ff);left:70px;top:0;animation:orb 4s ease-in-out infinite}
 .o3{width:50px;height:50px;background:linear-gradient(90deg,#6ef1d4,#06b6d4);left:120px;top:30px;animation:orb 5s ease-in-out infinite}
-@keyframes orb{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+@keyframes orb{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}
 
 /* footer */
 .footer{max-width:1200px;margin:20px auto;padding:12px;text-align:center;color:var(--muted)}
@@ -113,4 +113,160 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   .left-panel{width:100%}
   .hero-right{display:none}
   .features-grid{grid-template-columns:1fr}
+}
+
+/* ===========================
+   Widget de chat TechCareer
+   =========================== */
+
+/* versión mini de glass para mensajes del chat */
+.glass-xs{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:10px;
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+/* contenedor general del widget (esquina inferior derecha) */
+#tc-chat-widget{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  z-index:9999;
+  font-family:inherit;
+}
+
+/* botón flotante 💬 */
+#tc-chat-toggle{
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-size:20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#022;
+  box-shadow:0 10px 30px rgba(2,6,23,0.7);
+}
+
+/* panel del chat */
+#tc-chat-panel{
+  position:absolute;
+  bottom:52px;
+  right:0;
+  width:320px;
+  max-height:420px;
+  display:flex;
+  flex-direction:column;
+  background:linear-gradient(180deg, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
+  border-radius:16px;
+  border:1px solid rgba(148,163,184,0.35);
+  box-shadow:0 18px 40px rgba(2,6,23,0.9);
+  overflow:hidden;
+}
+
+.tc-chat-hidden{
+  display:none;
+}
+
+/* header del chat */
+#tc-chat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:600;
+  border-bottom:1px solid rgba(148,163,184,0.4);
+  background:linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.95));
+}
+
+#tc-chat-header span{
+  letter-spacing:0.02em;
+}
+
+#tc-chat-header button{
+  border:none;
+  background:transparent;
+  color:#e7f1f6;
+  font-size:16px;
+  cursor:pointer;
+}
+
+/* zona de mensajes */
+#tc-chat-messages{
+  flex:1;
+  padding:8px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  font-size:13px;
+}
+
+/* fila y burbuja de mensaje */
+.tc-chat-row{
+  display:flex;
+}
+
+.tc-chat-message{
+  padding:6px 9px;
+  margin-bottom:2px;
+  max-width:80%;
+  line-height:1.35;
+  word-wrap:break-word;
+}
+
+/* mensaje usuario (derecha) */
+.tc-chat-user{
+  margin-left:auto;
+  background:linear-gradient(135deg,var(--accent-2),var(--accent));
+  color:#022;
+}
+
+/* mensaje asistente (izquierda) */
+.tc-chat-assistant{
+  margin-right:auto;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(148,163,184,0.5);
+}
+
+/* formulario de entrada */
+#tc-chat-form{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:8px;
+  border-top:1px solid rgba(148,163,184,0.4);
+  background:linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
+}
+
+#tc-chat-input{
+  flex:1;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,0.7);
+  padding:6px 10px;
+  background:transparent;
+  color:#e7f1f6;
+  font-size:13px;
+}
+
+#tc-chat-input:focus{
+  outline:none;
+  border-color:var(--accent-2);
+}
+
+#tc-chat-form button[type="submit"]{
+  padding:6px 10px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#022;
+  box-shadow:0 6px 20px rgba(2,6,23,0.7);
 }

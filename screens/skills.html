@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../css/neo-glass.css">
   <script src="../js/navigation.js" defer></script>
   <script src="../js/skills.js" defer></script>
+  <script src="../js/chat.js" defer></script>
 </head>
 <body class="neo-bg">
 
@@ -35,6 +36,32 @@
       </div>
     </div>
   </main>
+
+  <!-- Widget de chat de TechCareer Assistant -->
+  <div id="tc-chat-widget">
+    <button id="tc-chat-toggle" class="glass-sm" aria-label="Abrir chat de ayuda">
+      💬
+    </button>
+
+    <div id="tc-chat-panel" class="tc-chat-hidden glass-sm">
+      <div id="tc-chat-header">
+        <span>TechCareer Assistant</span>
+        <button id="tc-chat-close" aria-label="Cerrar chat">×</button>
+      </div>
+
+      <div id="tc-chat-messages"></div>
+
+      <form id="tc-chat-form">
+        <input
+          id="tc-chat-input"
+          type="text"
+          placeholder="Escribe tu pregunta..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn primary">Enviar</button>
+      </form>
+    </div>
+  </div>
 
 </body>
 </html>
