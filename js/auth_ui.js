@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // SI TIENE AVATAR EN BASE64, SE USA. SI NO, SE USA UNA IMAGEN POR DEFECTO.
-    const avatarSrc = user.avatar || "../assets/user.jpg";
+    const avatarSrc = user.avatar || "../assets/user-svgrepo-com.svg.jpg";
 
     authArea.innerHTML = `
         <div class="profile-menu-container" style="position:relative;">
