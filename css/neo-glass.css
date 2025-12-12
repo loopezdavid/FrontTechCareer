@@ -115,6 +115,37 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   .features-grid{grid-template-columns:1fr}
 }
 
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #e7f1f6;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+.profile-menu-container img {
+    border: 2px solid rgba(255,255,255,0.08);
+    padding: 2px;
+    background: rgba(255,255,255,0.03);
+    transition: 0.2s;
+}
+
+.profile-menu-container img:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.15);
+}
+
+input {
+    color: #fff !important;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.35) !important;
+}
+
 /* ===========================
    Widget de chat TechCareer
    =========================== */
@@ -131,45 +162,63 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 /* contenedor general del widget (esquina inferior derecha) */
 #tc-chat-widget{
   position:fixed;
-  bottom:20px;
-  right:20px;
+  bottom:24px;
+  right:24px;
   z-index:9999;
   font-family:inherit;
 }
 
 /* botón flotante 💬 */
 #tc-chat-toggle{
-  width:44px;
-  height:44px;
+  width:52px;
+  height:52px;
   border-radius:999px;
   border:none;
   cursor:pointer;
-  font-size:20px;
+  font-size:22px;
   display:flex;
   align-items:center;
   justify-content:center;
   background:linear-gradient(135deg,var(--accent),var(--accent-2));
   color:#022;
-  box-shadow:0 10px 30px rgba(2,6,23,0.7);
+  box-shadow:0 12px 35px rgba(2,6,23,0.85);
 }
 
-/* panel del chat */
+/* panel del chat tipo WhatsApp, lateral derecho con efecto neo-glass */
 #tc-chat-panel{
-  position:absolute;
-  bottom:52px;
-  right:0;
-  width:320px;
-  max-height:420px;
+  position:fixed;
+  bottom:96px;              /* un poco por encima del botón */
+  right:24px;
+  width:360px;
+  max-width:calc(100% - 32px);
+  height:60vh;
+  max-height:520px;
   display:flex;
   flex-direction:column;
-  background:linear-gradient(180deg, rgba(15,23,42,0.96), rgba(15,23,42,0.96));
-  border-radius:16px;
-  border:1px solid rgba(148,163,184,0.35);
-  box-shadow:0 18px 40px rgba(2,6,23,0.9);
+
+  /* GLASS MUY TRANSLÚCIDO */
+  background:
+    radial-gradient(600px 400px at 0% 0%, rgba(63,183,255,0.22), transparent 60%),
+    radial-gradient(600px 400px at 100% 100%, rgba(110,241,212,0.24), transparent 60%),
+    linear-gradient(135deg, rgba(7,16,34,0.30), rgba(11,23,42,0.65));
+  backdrop-filter: blur(22px) saturate(190%);
+  -webkit-backdrop-filter: blur(22px) saturate(190%);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    0 24px 50px rgba(2,6,23,0.90),
+    0 0 0 1px rgba(15,23,42,0.6);
   overflow:hidden;
 }
 
+
+/* importante: el panel está oculto al inicio */
 .tc-chat-hidden{
+  display:none;
+}
+
+/* si el panel tiene la clase hidden, gana sobre display:flex */
+#tc-chat-panel.tc-chat-hidden{
   display:none;
 }
 
@@ -178,7 +227,7 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:8px 12px;
+  padding:10px 14px;
   font-size:13px;
   font-weight:600;
   border-bottom:1px solid rgba(148,163,184,0.4);
@@ -200,11 +249,11 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 /* zona de mensajes */
 #tc-chat-messages{
   flex:1;
-  padding:8px;
+  padding:10px;
   overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:4px;
+  gap:6px;
   font-size:13px;
 }
 
@@ -214,18 +263,19 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 }
 
 .tc-chat-message{
-  padding:6px 9px;
+  padding:7px 10px;
   margin-bottom:2px;
   max-width:80%;
   line-height:1.35;
   word-wrap:break-word;
 }
 
-/* mensaje usuario (derecha) */
+/* mensaje usuario (derecha, tipo WhatsApp) */
 .tc-chat-user{
   margin-left:auto;
   background:linear-gradient(135deg,var(--accent-2),var(--accent));
   color:#022;
+  border-radius:14px 14px 2px 14px;
 }
 
 /* mensaje asistente (izquierda) */
@@ -233,14 +283,15 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   margin-right:auto;
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border:1px solid rgba(148,163,184,0.5);
+  border-radius:14px 14px 14px 2px;
 }
 
 /* formulario de entrada */
 #tc-chat-form{
   display:flex;
   align-items:center;
-  gap:6px;
-  padding:8px;
+  gap:8px;
+  padding:8px 10px;
   border-top:1px solid rgba(148,163,184,0.4);
   background:linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.96));
 }
@@ -261,7 +312,7 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 }
 
 #tc-chat-form button[type="submit"]{
-  padding:6px 10px;
+  padding:6px 12px;
   border-radius:999px;
   border:none;
   cursor:pointer;
@@ -269,4 +320,15 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   background:linear-gradient(90deg,var(--accent),var(--accent-2));
   color:#022;
   box-shadow:0 6px 20px rgba(2,6,23,0.7);
+}
+
+/* En móvil, el chat puede ocupar todo el ancho abajo (estilo app) */
+@media (max-width: 640px){
+  #tc-chat-panel{
+    right:8px;
+    left:8px;
+    width:auto;
+    bottom:82px;
+    height:55vh;
+  }
 }

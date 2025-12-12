@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Iniciar Sesión — TechCareer</title>
+
+  <link rel="stylesheet" href="../css/neo-glass.css">
+</head>
+
+<body class="neo-bg">
+
+  <header class="nav glass-sm">
+    <div class="brand small">
+      <div class="logo-glow">TC</div>
+      <div>
+        <div class="brand-title small">TechCareer</div>
+        <div class="brand-sub muted">Acceso seguro</div>
+      </div>
+    </div>
+    <nav class="nav-actions">
+      <button class="btn ghost" onclick="goTo('home')">Inicio</button>
+    </nav>
+  </header>
+
+  <main class="skills-main">
+    <div class="skills-panel glass" style="max-width:360px;margin:auto;text-align:center;">
+      <h2>Iniciar sesión</h2>
+
+      <input id="email" type="email" placeholder="Correo electrónico"
+             style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+             background:transparent;border:1px solid rgba(255,255,255,0.03);
+             color:inherit;">
+
+      <input id="password" type="password" placeholder="Contraseña"
+             style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+             background:transparent;border:1px solid rgba(255,255,255,0.03);
+             color:inherit;">
+
+      <button id="loginBtn" class="btn primary" style="margin-top:18px;width:100%;">
+        Entrar
+      </button>
+
+      <p class="muted" style="margin-top:14px;">
+        ¿No tienes cuenta?
+        <a href="../screens/register.html" style="color:var(--accent-2);">
+          Regístrate aquí
+        </a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Scripts SIEMPRE AL FINAL -->
+  <script src="../js/navigation.js"></script>
+  <script src="../js/login.js"></script>
+
+</body>
+</html>
