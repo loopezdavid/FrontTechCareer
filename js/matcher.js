@@ -47,6 +47,38 @@ function handleFileSelected(file){
   currentResult = null;
 }
 
+const SKILLS_API_URL = "http://127.0.0.1:8000/api/v1/predict_skills";
+
+async function sendSkillsFile(file) {
+  if (!file) return alert("Selecciona un archivo.");
+  
+  const predSkillsMain = document.getElementById('predMain');
+  predSkillsMain.textContent = 'Procesando skills…';
+  
+  try {
+    const fd = new FormData();
+    fd.append('file', file, file.name);
+    
+    const res = await fetch(SKILLS_API_URL, { method: 'POST', body: fd });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    
+    const data = await res.json();
+    
+    if (data.extracted_skills) {
+      // store skills in localStorage
+      localStorage.setItem('skills_detected', JSON.stringify(data.extracted_skills));
+    }
+    
+    // Optionally update UI with number of skills detected
+    predSkillsMain.textContent = `Skills extraídas: ${data.extracted_skills?.length || 0}`;
+    
+  } catch (e) {
+    console.error(e);
+    alert('Error al procesar skills: ' + (e.message || e));
+    predSkillsMain.textContent = 'Error';
+  }
+}
+
 sendBtn.addEventListener('click', async ()=>{
   if(!selectedFile) return alert('Selecciona un archivo.');
   predMain.textContent = 'Procesando…';
@@ -62,7 +94,12 @@ sendBtn.addEventListener('click', async ()=>{
     metaFilename.textContent = data.filename || selectedFile.name;
     renderTop3(data.top3 || []);
     renderTable(data.probabilidades || {});
-    if(data.skills) localStorage.setItem('skills_detected', JSON.stringify(data.skills));
+
+    const resSkills = await fetch("http://127.0.0.1:8000/api/v1/predict_skills", {method:'POST', body:fd});
+    if(!resSkills.ok) throw new Error('HTTP '+resSkills.status);
+    const dataSkills = await resSkills.json();
+    if(dataSkills.extracted_skills) localStorage.setItem('skills_detected', JSON.stringify(dataSkills.extracted_skills));
+
   }catch(e){
     console.error(e);
     alert('Error: '+(e.message||e));

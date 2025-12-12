@@ -3,15 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Skills — El Huesaso GPT</title>
+  <title>Skills — TechCareer</title>
   <link rel="stylesheet" href="../css/neo-glass.css">
   <script src="../js/navigation.js" defer></script>
+  <script src="../js/skills.js" defer></script>
+  <script src="../js/chat.js" defer></script>
 </head>
 <body class="neo-bg">
 
   <header class="nav glass-sm">
     <div class="brand small">
-      <div class="logo-glow">EH</div>
+      <div class="logo-glow">TC</div>
       <div>
         <div class="brand-title small">Skills Detectadas</div>
         <div class="brand-sub muted">Extraídas del CV</div>
@@ -37,32 +39,31 @@
     </div>
   </main>
 
-  <script>
-    const saved = localStorage.getItem("skills_detected");
-    const box = document.getElementById("skillsBox");
-    if (!saved) {
-      box.innerHTML = "<p class='muted'>No hay skills procesadas aún. Vuelve al matcher y procesa un CV.</p>";
-    } else {
-      JSON.parse(saved).forEach(skill => {
-        const tag = document.createElement("span");
-        tag.className = "skill-pill";
-        tag.textContent = skill;
-        box.appendChild(tag);
-      });
-    }
+  <!-- Widget de chat de TechCareer Assistant -->
+  <div id="tc-chat-widget">
+    <button id="tc-chat-toggle" class="glass-sm" aria-label="Abrir chat de ayuda">
+      💬
+    </button>
 
-    function exportSkills(){
-      const s = localStorage.getItem("skills_detected");
-      if(!s){ alert("No hay skills para exportar"); return; }
-      const arr = JSON.parse(s);
-      const csv = arr.map(x=>`"${x.replace(/"/g,'""')}"`).join("\n");
-      const blob = new Blob([csv], {type:'text/csv'});
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'skills.csv';
-      a.click();
-    }
-  </script>
+    <div id="tc-chat-panel" class="tc-chat-hidden glass-sm">
+      <div id="tc-chat-header">
+        <span>TechCareer Assistant</span>
+        <button id="tc-chat-close" aria-label="Cerrar chat">×</button>
+      </div>
+
+      <div id="tc-chat-messages"></div>
+
+      <form id="tc-chat-form">
+        <input
+          id="tc-chat-input"
+          type="text"
+          placeholder="Escribe tu pregunta..."
+          autocomplete="off"
+        />
+        <button type="submit" class="btn primary">Enviar</button>
+      </form>
+    </div>
+  </div>
 
 </body>
 </html>
