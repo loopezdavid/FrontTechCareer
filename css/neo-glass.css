@@ -102,7 +102,7 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 .o1{width:80px;height:80px;background:linear-gradient(90deg,#3fb7ff,#6ef1d4);left:0;top:10px;animation:orb 3s ease-in-out infinite}
 .o2{width:60px;height:60px;background:linear-gradient(90deg,#8a6eff,#3fb7ff);left:70px;top:0;animation:orb 4s ease-in-out infinite}
 .o3{width:50px;height:50px;background:linear-gradient(90deg,#6ef1d4,#06b6d4);left:120px;top:30px;animation:orb 5s ease-in-out infinite}
-@keyframes orb{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}
+@keyframes orb{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
 
 /* footer */
 .footer{max-width:1200px;margin:20px auto;padding:12px;text-align:center;color:var(--muted)}
@@ -113,6 +113,37 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
   .left-panel{width:100%}
   .hero-right{display:none}
   .features-grid{grid-template-columns:1fr}
+}
+
+.dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    color: #e7f1f6;
+    font-size: 14px;
+}
+
+.dropdown-item:hover {
+    background: rgba(255,255,255,0.08);
+}
+.profile-menu-container img {
+    border: 2px solid rgba(255,255,255,0.08);
+    padding: 2px;
+    background: rgba(255,255,255,0.03);
+    transition: 0.2s;
+}
+
+.profile-menu-container img:hover {
+    transform: scale(1.05);
+    border-color: rgba(255,255,255,0.15);
+}
+
+input {
+    color: #fff !important;
+}
+
+input::placeholder {
+    color: rgba(255,255,255,0.35) !important;
 }
 
 /* ===========================

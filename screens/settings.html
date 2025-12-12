@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Configuración — TechCareer</title>
+
+  <link rel="stylesheet" href="../css/neo-glass.css">
+  <script src="../js/navigation.js" defer></script>
+  <script src="../js/settings.js" defer></script>
+
+  <style>
+    label {
+      color: white;
+      display: block;
+      margin-top: 12px;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    #avatarPreview {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 10px;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    #changePhotoBtn {
+      margin-top: 10px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+    }
+
+    #changePhotoBtn:hover {
+      background: rgba(255,255,255,0.15);
+    }
+  </style>
+</head>
+
+<body class="neo-bg">
+
+<header class="nav glass-sm">
+  <div class="brand small">
+    <div class="logo-glow">EH</div>
+    <div>
+      <div class="brand-title small">Configuración</div>
+      <div class="brand-sub muted">Ajustes de tu cuenta</div>
+    </div>
+  </div>
+  <nav class="nav-actions">
+    <button class="btn ghost" onclick="goTo('home')">Volver</button>
+  </nav>
+</header>
+
+<main class="skills-main">
+  <div class="skills-panel glass" style="max-width:420px;margin:auto;">
+
+    <h2 style="color:white;">Editar Cuenta</h2>
+
+    <label>Nombre</label>
+    <input id="name" type="text">
+
+    <label>Correo</label>
+    <input id="email" type="email">
+
+    <label>Foto de perfil</label>
+
+    <img id="avatarPreview" style="display:none;">
+    <br>
+
+    <!-- Botón para cambiar foto -->
+    <button id="changePhotoBtn">Cambiar foto</button>
+    <input id="avatarInput" type="file" accept="image/*" style="display:none;">
+
+    <label>Contraseña nueva</label>
+    <input id="newPass1" type="password">
+
+    <label>Repetir contraseña</label>
+    <input id="newPass2" type="password">
+
+    <button id="saveBtn" class="btn primary" style="margin-top:20px;width:100%;">
+      Guardar cambios
+    </button>
+
+    <button onclick="logout()" class="btn ghost" style="margin-top:10px;width:100%;">
+      Cerrar sesión
+    </button>
+
+  </div>
+</main>
+
+</body>
+</html>

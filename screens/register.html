@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Crear Cuenta — TechCareer</title>
+
+  <link rel="stylesheet" href="../css/neo-glass.css">
+  <script src="../js/navigation.js" defer></script>
+</head>
+
+<body class="neo-bg">
+
+<header class="nav glass-sm">
+  <div class="brand small">
+    <div class="logo-glow">EH</div>
+    <div>
+      <div class="brand-title small">Crear Cuenta</div>
+      <div class="brand-sub muted">Nuevo usuario</div>
+    </div>
+  </div>
+  <nav class="nav-actions">
+    <button class="btn ghost" onclick="goTo('login')">Volver</button>
+  </nav>
+</header>
+
+<main class="skills-main">
+  <div class="skills-panel glass" style="max-width:420px;margin:auto;">
+
+    <h2>Crear Cuenta</h2>
+
+    <input id="name" type="text" placeholder="Nombre"
+           style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+           background:transparent;border:1px solid rgba(255,255,255,0.1);color:white;">
+
+    <input id="email" type="email" placeholder="Correo electrónico"
+           style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+           background:transparent;border:1px solid rgba(255,255,255,0.1);color:white;">
+
+    <label class="muted" style="margin-top:12px;display:block;">Foto de perfil</label>
+
+    <label class="btn ghost" style="cursor:pointer;">
+      <input id="photo" type="file" accept="image/*" style="display:none;">
+      Seleccionar foto
+    </label>
+
+    <img id="preview" src="../assets/user-svgrepo-com.svg"
+         style="width:120px;height:120px;border-radius:50%;object-fit:cover;
+         margin-top:12px;display:none;">
+
+    <input id="password1" type="password" placeholder="Contraseña"
+           style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+           background:transparent;border:1px solid rgba(255,255,255,0.1);color:white;">
+
+    <input id="password2" type="password" placeholder="Repetir contraseña"
+           style="margin-top:12px;width:100%;padding:12px;border-radius:10px;
+           background:transparent;border:1px solid rgba(255,255,255,0.1);color:white;">
+
+    <button id="registerBtn" class="btn primary" style="margin-top:20px;width:100%;">
+      Crear cuenta
+    </button>
+
+  </div>
+</main>
+
+<script src="../js/register.js"></script>
+</body>
+</html>

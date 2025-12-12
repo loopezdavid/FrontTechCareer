@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mi Perfil — TechCareer</title>
+
+  <link rel="stylesheet" href="../css/neo-glass.css">
+  <script src="../js/navigation.js" defer></script>
+</head>
+
+<body class="neo-bg">
+
+<header class="nav glass-sm">
+  <div class="brand small">
+    <div class="logo-glow">EH</div>
+    <div>
+      <div class="brand-title small">Mi Perfil</div>
+      <div class="brand-sub muted">Información personal</div>
+    </div>
+  </div>
+  <nav class="nav-actions">
+    <button class="btn ghost" onclick="goTo('settings')">Editar Perfil</button>
+    <button class="btn ghost" onclick="goTo('home')">Inicio</button>
+  </nav>
+</header>
+
+<main class="skills-main">
+
+  <div class="skills-panel glass" style="max-width:420px;margin:auto;text-align:center">
+    <h2>Usuario</h2>
+
+    <img id="avatar" 
+         style="width:100px;height:100px;border-radius:50%;margin-bottom:12px">
+
+    <p><strong>Nombre:</strong> <span id="pName"></span></p>
+    <p><strong>Email:</strong> <span id="pEmail"></span></p>
+
+  </div>
+
+</main>
+
+<script>
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    location.href = "./login.html";
+  }
+
+  document.getElementById("pName").textContent = user.name;
+  document.getElementById("pEmail").textContent = user.email;
+  document.getElementById("avatar").src = user.avatar || "../assets/user.png";
+</script>
+
+</body>
+</html>

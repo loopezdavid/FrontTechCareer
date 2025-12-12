@@ -3,11 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+<<<<<<< HEAD
+  <title>El Huesaso GPT — Inicio (Neo-Glass)</title>
+  
+=======
   <title>TechCareer — Inicio (Neo-Glass)</title>
+>>>>>>> 7d5332d0d5a53b371ed880d1bb7cea0868207ea8
   <link rel="stylesheet" href="../css/neo-glass.css">
+
+  <!-- Navigation siempre puede ir aquí -->
   <script src="../js/navigation.js" defer></script>
   <script src="../js/chat.js" defer></script>
 </head>
+
 <body class="neo-bg">
 
   <header class="nav">
@@ -18,31 +26,47 @@
         <div class="brand-sub">Match de Trabajo con IA</div>
       </div>
     </div>
+
     <nav class="nav-actions">
       <button class="btn ghost" onclick="goTo('matcher')">Ir al Matcher</button>
       <button class="btn ghost" onclick="goTo('skills')">Skills</button>
+
+      <!-- Aquí auth_ui inyectará login o menú del usuario -->
+      <div id="authArea"></div>
     </nav>
   </header>
 
   <main class="home-hero">
     <div class="hero-card glass">
       <div class="hero-left">
-        <h1>Encuentra el trabajo perfecto, <span class="accent">potenciado por IA</span></h1>
-        <p class="muted">Sube tu CV de forma privada y recibe una predicción de rol, habilidades detectadas y sugerencias para destacar.</p>
+        <h1>
+          Encuentra el trabajo perfecto, 
+          <span class="accent">potenciado por IA</span>
+        </h1>
+
+        <p class="muted">
+          Sube tu CV de forma privada y recibe una predicción de rol,
+          habilidades detectadas y sugerencias para destacar.
+        </p>
+
         <div class="cta-row">
           <button class="btn primary" onclick="goTo('loader')">Comenzar</button>
           <a class="link" href="../screens/matcher.html">Ir directo al matcher</a>
         </div>
+
         <div class="trust">
           <span class="chip">Privado</span>
           <span class="chip">Modelo local</span>
           <span class="chip">Exportable</span>
         </div>
       </div>
+
       <div class="hero-right">
         <div class="mockup glass-sm">
           <div class="mock-header">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
           </div>
           <div class="mock-body">
             <div class="mock-line short"></div>
@@ -59,10 +83,12 @@
         <h3>Predicciones rápidas</h3>
         <p class="muted">Resultados en segundos con tu modelo.</p>
       </div>
+
       <div class="feature glass-sm">
         <h3>Diseño profesional</h3>
         <p class="muted">Interfaz limpia y agradable.</p>
       </div>
+
       <div class="feature glass-sm">
         <h3>Skills detectadas</h3>
         <p class="muted">Exporta y comparte lo relevante.</p>
@@ -71,6 +97,14 @@
   </main>
 
   <footer class="footer glass-sm">
+<<<<<<< HEAD
+    <div>© <strong>El Huesaso GPT</strong> — Neo-Glass Edition</div>
+    <div class="muted">Integrado · Privado · Local</div>
+  </footer>
+
+  <!-- IMPORTANTÍSIMO: auth_ui DEBE IR AL FINAL -->
+  <script src="../js/auth_ui.js"></script>
+=======
     <div>© <strong>TechCareer</strong> — Neo-Glass Edition</div>
     <div class="muted">Integrado · Privado · Local</div>
   </footer>
@@ -100,6 +134,7 @@
       </form>
     </div>
   </div>
+>>>>>>> 7d5332d0d5a53b371ed880d1bb7cea0868207ea8
 
 </body>
 </html>
