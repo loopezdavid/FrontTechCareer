@@ -94,6 +94,45 @@ table td{padding:10px;border-bottom:1px dashed rgba(255,255,255,0.03)}
 .skills-panel{padding:18px}
 .skills-box{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .skill-pill{padding:8px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(110,241,212,0.06), rgba(63,183,255,0.04));border:1px solid rgba(255,255,255,0.02);font-weight:700;color:#dffbf4}
+/* Skills panel: load more / see less buttons */
+.jobs-actions {
+  margin-top: 2rem;          /* space between jobs and buttons */
+  display: flex;
+  flex-direction: column;    /* stack buttons vertically */
+  align-items: center;       /* center horizontally */
+  gap: 0.75rem;              /* space between buttons */
+}
+
+.jobs-actions .btn.ghost {
+  background: transparent;   /* keep muted style */
+  border:1px solid rgba(255,255,255,0.03);
+  color: var(--muted);
+  padding: 8px 12px;
+}
+.job-skills-columns {
+  display: flex;
+  gap: 24px; /* space between columns */
+  margin-top: 8px;
+}
+
+.job-column {
+  flex: 1; /* each column takes half the space */
+}
+
+.column-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--accent);
+}
+
+.skill-item {
+  margin-bottom: 4px;
+}
+
+.skill-item.muted {
+  color: var(--muted);
+}
+
 
 /* loader orbs */
 .center-loader{min-height:70vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}

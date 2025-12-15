@@ -130,6 +130,8 @@ sendBtn.addEventListener('click', async () => {
           }))
         )
       );
+      
+      localStorage.setItem('top1_job', dataSkills.top1);
     }
 
   } catch (e) {
