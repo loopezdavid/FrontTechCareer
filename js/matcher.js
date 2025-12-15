@@ -1,5 +1,6 @@
 const API_URL = "http://127.0.0.1:8000/api/v1/predict_pdf";
 const SKILLS_URL = "http://127.0.0.1:8000/api/v1/skills/extract_skills";
+const SENIORITY_URL = "http://127.0.0.1:8000/api/v1/predict_seniority";
 
 let selectedFile = null;
 let currentResult = null;
@@ -12,12 +13,15 @@ const downloadJson = document.getElementById('downloadJson');
 const clearBtn = document.getElementById('clearBtn');
 
 const predMain = document.getElementById('predMain');
+const seniorityBadge = document.getElementById('seniorityBadge');
 const metaFilename = document.getElementById('metaFilename');
 const topList = document.getElementById('topList');
 const probTableBody = document.querySelector('#probTable tbody');
 const top3mini = document.getElementById('top3mini');
-const skillsList = document.getElementById('skillsList');  // container for skills
-const jobsList = document.getElementById('jobsList');      // container for jobs with matching/missing skills
+
+// OJO: en matcher.html NO existen estos contenedores, así que pueden ser null.
+const skillsList = document.getElementById('skillsList');
+const jobsList = document.getElementById('jobsList');
 
 const fmtPct = v => (v * 100).toFixed(1) + '%';
 
@@ -29,6 +33,41 @@ function escapeHtml(s) {
     '"': '&quot;',
     "'": '&#39;'
   })[c]);
+}
+
+/* -------------------------------------- */
+/* SENIORITY HELPERS                       */
+/* -------------------------------------- */
+function normalizeSeniorityLabel(s) {
+  const v = String(s || '').trim();
+  if (!v) return null;
+
+  const low = v.toLowerCase();
+  if (low.includes('junior') || low === 'jr' || low.includes('entry')) return 'Junior';
+  if (low.includes('mid')) return 'Mid';
+  if (low.includes('senior') || low === 'sr') return 'Senior';
+
+  // si viene algo distinto, lo mostramos tal cual (capitalizado)
+  return v.charAt(0).toUpperCase() + v.slice(1);
+}
+
+function setSeniorityBadge(label) {
+  if (!seniorityBadge) return;
+
+  // reset clases de color
+  seniorityBadge.classList.remove('seniority-junior', 'seniority-mid', 'seniority-senior');
+
+  if (!label) {
+    seniorityBadge.textContent = 'Seniority: —';
+    return;
+  }
+
+  seniorityBadge.textContent = `Seniority: ${label}`;
+
+  const key = label.toLowerCase();
+  if (key === 'junior') seniorityBadge.classList.add('seniority-junior');
+  else if (key === 'mid') seniorityBadge.classList.add('seniority-mid');
+  else if (key === 'senior') seniorityBadge.classList.add('seniority-senior');
 }
 
 /* -------------------------------------- */
@@ -54,23 +93,31 @@ fileinput.addEventListener('change', e => {
 function handleFileSelected(file) {
   selectedFile = file;
   uploader.querySelector('strong').textContent = file.name;
+
   predMain.textContent = 'Archivo listo para enviar';
+  setSeniorityBadge(null);
+
   extracted.value = '';
   metaFilename.textContent = '';
   topList.innerHTML = '';
   probTableBody.innerHTML = '';
   top3mini.innerHTML = '';
-  skillsList.innerHTML = '';
-  jobsList.innerHTML = '';
+
+  // Estos pueden ser null en matcher.html
+  if (skillsList) skillsList.innerHTML = '';
+  if (jobsList) jobsList.innerHTML = '';
+
   currentResult = null;
 }
 
 /* -------------------------------------- */
-/* SEND FILE (JOB + SKILLS)               */
+/* SEND FILE (JOB + SENIORITY + SKILLS)   */
 /* -------------------------------------- */
 sendBtn.addEventListener('click', async () => {
   if (!selectedFile) return alert('Selecciona un archivo.');
+
   predMain.textContent = 'Procesando…';
+  setSeniorityBadge(null);
   sendBtn.disabled = true;
 
   try {
@@ -81,63 +128,70 @@ sendBtn.addEventListener('click', async () => {
     const res = await fetch(API_URL, { method: 'POST', body: fd });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
+
     currentResult = data;
 
     extracted.value = data.texto_extraido || data.text || '';
     metaFilename.textContent = data.filename || selectedFile.name;
 
+    // Mostrar predicción principal (top1)
+    predMain.textContent = data.prediccion || '—';
+
     renderTop3(data.top3 || []);
     renderTable(data.probabilidades || {});
 
-    // Store jobs with matching/missing skills
-    if (data.ranking) {
-      const jobsToStore = data.ranking.map(j => ({
-        job_title: j.job_title,
-        matching_skills: j.matching_skills || [],
-        missing_skills: (data.missing_skills_by_job?.[j.job_title]) || []
-      }));
-      localStorage.setItem('jobs_detected', JSON.stringify(jobsToStore));
-      renderJobsWithSkills();
+    // --- Seniority Prediction (from PDF) ---
+    try {
+      const fdSen = new FormData();
+      fdSen.append('file', selectedFile, selectedFile.name);
+
+      const resSen = await fetch(SENIORITY_URL, { method: 'POST', body: fdSen });
+      if (!resSen.ok) throw new Error('HTTP ' + resSen.status);
+      const dataSen = await resSen.json();
+
+      const label = normalizeSeniorityLabel(dataSen.seniority);
+      setSeniorityBadge(label);
+
+      // Guardar también en el JSON descargable
+      currentResult = { ...(currentResult || {}), seniority: label || dataSen.seniority };
+      localStorage.setItem('seniority', label || '');
+    } catch (err) {
+      console.warn('Seniority failed:', err);
+      setSeniorityBadge(null);
     }
 
     // --- Skills Extraction (from extracted text) ---
     const resSkills = await fetch(SKILLS_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        text: extracted.value
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: extracted.value })
     });
 
     if (!resSkills.ok) throw new Error('HTTP ' + resSkills.status);
     const dataSkills = await resSkills.json();
 
     if (dataSkills.extracted_skills) {
-      localStorage.setItem(
-        'skills_detected',
-        JSON.stringify(dataSkills.extracted_skills)
-      );
+      localStorage.setItem('skills_detected', JSON.stringify(dataSkills.extracted_skills));
 
       localStorage.setItem(
         'jobs_detected',
         JSON.stringify(
-          dataSkills.ranking.map(j => ({
+          (dataSkills.ranking || []).map(j => ({
             job_title: j.job_title,
-            matching_skills: j.matching_skills,
-            missing_skills: dataSkills.missing_skills_by_job[j.job_title] || []
+            matching_skills: j.matching_skills || [],
+            missing_skills: (dataSkills.missing_skills_by_job?.[j.job_title]) || []
           }))
         )
       );
-      
-      localStorage.setItem('top1_job', dataSkills.top1);
+
+      localStorage.setItem('top1_job', dataSkills.top1 || '');
     }
 
   } catch (e) {
     console.error(e);
     alert('Error: ' + (e.message || e));
     predMain.textContent = 'Error';
+    setSeniorityBadge(null);
   } finally {
     sendBtn.disabled = false;
   }
@@ -162,14 +216,20 @@ clearBtn.addEventListener('click', () => {
   selectedFile = null;
   extracted.value = '';
   predMain.textContent = '— Esperando archivo —';
+  setSeniorityBadge(null);
+
   topList.innerHTML = '';
   probTableBody.innerHTML = '';
   top3mini.innerHTML = '';
-  skillsList.innerHTML = '';
-  jobsList.innerHTML = '';
+
+  if (skillsList) skillsList.innerHTML = '';
+  if (jobsList) jobsList.innerHTML = '';
+
   uploader.querySelector('strong').textContent = 'Haz clic o arrastra tu archivo';
+
   localStorage.removeItem('skills_detected');
   localStorage.removeItem('jobs_detected');
+  localStorage.removeItem('seniority');
 });
 
 /* -------------------------------------- */
@@ -220,9 +280,11 @@ function renderTable(obj) {
 }
 
 /* -------------------------------------- */
-/* RENDER SKILLS                           */
+/* OPTIONAL: These renderers are safe now  */
+/* (but matcher.html doesn't have containers) */
 /* -------------------------------------- */
 function renderSkills() {
+  if (!skillsList) return;
   const skills = JSON.parse(localStorage.getItem('skills_detected') || '[]');
   if (!skills.length) {
     skillsList.textContent = 'No se detectaron skills.';
@@ -231,10 +293,8 @@ function renderSkills() {
   skillsList.innerHTML = skills.map(s => `<div>${escapeHtml(s)}</div>`).join('');
 }
 
-/* -------------------------------------- */
-/* RENDER JOBS WITH MATCHING & MISSING     */
-/* -------------------------------------- */
 function renderJobsWithSkills() {
+  if (!jobsList) return;
   const jobs = JSON.parse(localStorage.getItem('jobs_detected') || '[]');
   if (!jobs.length) {
     jobsList.innerHTML = '<div>No se detectaron trabajos.</div>';
@@ -244,8 +304,8 @@ function renderJobsWithSkills() {
   jobsList.innerHTML = jobs.map(j => `
     <div class="job-card">
       <strong>${escapeHtml(j.job_title)}</strong><br>
-      Matching skills: ${j.matching_skills.join(', ') || 'Ninguna'}<br>
-      Faltan: ${j.missing_skills.join(', ') || 'Ninguna'}
+      Matching skills: ${(j.matching_skills || []).join(', ') || 'Ninguna'}<br>
+      Faltan: ${(j.missing_skills || []).join(', ') || 'Ninguna'}
     </div>
   `).join('');
 }
@@ -263,9 +323,15 @@ function highlightBest() {
   }
 }
 
-
-// --- INITIAL RENDER IF DATA EXISTS ---
+/* -------------------------------------- */
+/* INITIAL RENDER IF DATA EXISTS           */
+/* -------------------------------------- */
 document.addEventListener('DOMContentLoaded', () => {
   renderSkills();
   renderJobsWithSkills();
+
+  // si hubiera un seniority guardado
+  const saved = localStorage.getItem('seniority');
+  if (saved) setSeniorityBadge(saved);
+  else setSeniorityBadge(null);
 });
