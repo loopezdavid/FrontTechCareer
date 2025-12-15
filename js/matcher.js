@@ -1,5 +1,5 @@
 const API_URL = "http://127.0.0.1:8000/api/v1/predict_pdf";
-const SKILLS_API_URL = "http://127.0.0.1:8000/api/v1/skills/extract_skills_from_pdf";
+const SKILLS_URL = "http://127.0.0.1:8000/api/v1/skills/extract_skills";
 
 let selectedFile = null;
 let currentResult = null;
@@ -100,17 +100,36 @@ sendBtn.addEventListener('click', async () => {
       renderJobsWithSkills();
     }
 
-    // --- Skills Extraction ---
-    const fd2 = new FormData();
-    fd2.append('file', selectedFile, selectedFile.name);
+    // --- Skills Extraction (from extracted text) ---
+    const resSkills = await fetch(SKILLS_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        text: extracted.value
+      })
+    });
 
-    const resSkills = await fetch(SKILLS_API_URL, { method: 'POST', body: fd2 });
     if (!resSkills.ok) throw new Error('HTTP ' + resSkills.status);
     const dataSkills = await resSkills.json();
 
     if (dataSkills.extracted_skills) {
-      localStorage.setItem('skills_detected', JSON.stringify(dataSkills.extracted_skills));
-      renderSkills();
+      localStorage.setItem(
+        'skills_detected',
+        JSON.stringify(dataSkills.extracted_skills)
+      );
+
+      localStorage.setItem(
+        'jobs_detected',
+        JSON.stringify(
+          dataSkills.ranking.map(j => ({
+            job_title: j.job_title,
+            matching_skills: j.matching_skills,
+            missing_skills: dataSkills.missing_skills_by_job[j.job_title] || []
+          }))
+        )
+      );
     }
 
   } catch (e) {
@@ -241,6 +260,7 @@ function highlightBest() {
     );
   }
 }
+
 
 // --- INITIAL RENDER IF DATA EXISTS ---
 document.addEventListener('DOMContentLoaded', () => {
